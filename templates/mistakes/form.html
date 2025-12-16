@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h4 class="card-title">Add mistake for {{ attempt.problem.title }}</h4>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+                    <div class="mb-3">
+                        <label class="form-label">Type</label>
+                        {{ form.mistake_type }}
+                        {{ form.mistake_type.errors }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Severity (1-5)</label>
+                        {{ form.severity }}
+                        {{ form.severity.errors }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Short label</label>
+                        {{ form.short_label }}
+                        {{ form.short_label.errors }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Detailed postmortem (Markdown)</label>
+                        {{ form.detailed_postmortem }}
+                        {{ form.detailed_postmortem.errors }}
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 form-check">
+                            {{ form.conceptual_gap }} <label class="form-check-label">Conceptual gap</label>
+                        </div>
+                        <div class="col-md-4 form-check">
+                            {{ form.execution_error }} <label class="form-check-label">Execution error</label>
+                        </div>
+                        <div class="col-md-4 form-check">
+                            {{ form.strategy_error }} <label class="form-check-label">Strategy error</label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fix plan</label>
+                        {{ form.fix_plan }}
+                        {{ form.fix_plan.errors }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Next review date</label>
+                        {{ form.next_review_date }}
+                        {{ form.next_review_date.errors }}
+                    </div>
+                    <button class="btn btn-primary" type="submit">Save mistake</button>
+                    <a class="btn btn-link" href="{% url 'finish_attempt' attempt.pk %}">Back</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

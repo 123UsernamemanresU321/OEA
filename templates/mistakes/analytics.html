@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load markdown_extras %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="fw-bold">Mistake Analytics</h2>
+    <a class="btn btn-outline-primary" href="{% url 'review_queue' %}">Review queue</a>
+</div>
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h5 class="card-title">Heatmap: Topic × Mistake Type</h5>
+        {% if heatmap %}
+        <div class="table-responsive">
+            <table class="table table-bordered align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Topic</th>
+                        {% for t in type_headers %}
+                        <th>{{ t }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for topic, types in heatmap.items %}
+                    <tr>
+                        <td>{{ topic }}</td>
+                        {% for t in type_headers %}
+                            {% with count=types|get_item:t %}
+                            <td class="{% if count >=3 %}table-danger{% elif count >=1 %}table-warning{% endif %}">
+                                {{ count|default:"0" }}
+                            </td>
+                            {% endwith %}
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+            <p class="text-muted mb-0">No mistakes yet.</p>
+        {% endif %}
+    </div>
+</div>
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Trend over time</h5>
+                {% if trend %}
+                    <ul class="list-group list-group-flush">
+                    {% for row in trend %}
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>{{ row.month|date:"M Y" }}</span>
+                            <span class="badge bg-secondary">{{ row.total }}</span>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted mb-0">No data yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Repeat risk (≥2)</h5>
+                {% if repeat_risk %}
+                    <ul class="list-group list-group-flush">
+                    {% for r in repeat_risk %}
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>{{ r.mistake_type__name }}</span>
+                            <span class="badge bg-danger">{{ r.total }}</span>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted mb-0">No recurring mistakes detected.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

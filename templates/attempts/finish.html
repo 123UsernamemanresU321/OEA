@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-7">
+        <div class="card shadow-sm mb-3">
+            <div class="card-body">
+                <h4 class="card-title">Finish Attempt: {{ attempt.problem.title }}</h4>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Outcome</label>
+                            {{ form.outcome }}
+                            {{ form.outcome.errors }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Confidence (1-5)</label>
+                            {{ form.confidence }}
+                            {{ form.confidence.errors }}
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Final answer (Markdown)</label>
+                        {{ form.final_answer }}
+                        {{ form.final_answer.errors }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Solution notes / reflection</label>
+                        {{ form.solution_notes }}
+                        {{ form.solution_notes.errors }}
+                    </div>
+                    <button class="btn btn-primary" type="submit">Save</button>
+                    <a class="btn btn-link" href="{% url 'attempt_list' %}">Back</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title mb-0">Mistakes</h5>
+                    <a class="btn btn-sm btn-outline-primary" href="{% url 'add_mistake' attempt.pk %}">Add mistake</a>
+                </div>
+                <ul class="list-group list-group-flush mt-3">
+                    {% for m in attempt.mistakes.all %}
+                    <li class="list-group-item">
+                        <strong>{{ m.short_label }}</strong> — {{ m.mistake_type.name }} ({{ m.severity }})
+                        <div class="text-muted small">{{ m.detailed_postmortem|truncatewords:20 }}</div>
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item text-muted">No mistakes logged.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

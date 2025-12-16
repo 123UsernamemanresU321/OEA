@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h3 class="card-title">{{ title }}</h3>
+            <form method="post">
+              {% csrf_token %}
+              {{ form.non_field_errors }}
+              <div class="mb-3">
+                <label class="form-label">Title</label>
+                <input type="text" name="title" value="{{ form.title.value|default_if_none:'' }}" class="form-control" required>
+                {{ form.title.errors }}
+              </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Source</label>
+                <input type="text" name="source" value="{{ form.source.value|default_if_none:'' }}" class="form-control">
+                {{ form.source.errors }}
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Topic</label>
+                {{ form.topic }}
+                {{ form.topic.errors }}
+              </div>
+              <div class="col-md-3 mb-3">
+                <label class="form-label">Difficulty (1-10)</label>
+                <input type="number" min="1" max="10" name="difficulty" value="{{ form.difficulty.value|default:5 }}" class="form-control">
+                {{ form.difficulty.errors }}
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Tags (comma separated)</label>
+              <input type="text" name="tags" value="{{ form.tags.value|default_if_none:'' }}" class="form-control">
+              {{ form.tags.errors }}
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Statement (Markdown)</label>
+              <textarea name="statement" rows="6" class="form-control">{{ form.statement.value|default_if_none:'' }}</textarea>
+              {{ form.statement.errors }}
+            </div>
+          <button class="btn btn-primary" type="submit">Save</button>
+          <a class="btn btn-link" href="{% url 'problem_list' %}">Cancel</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

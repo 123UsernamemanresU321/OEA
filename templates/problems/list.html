@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="fw-bold">Problems</h2>
+    <a class="btn btn-primary" href="{% url 'problem_create' %}">New Problem</a>
+</div>
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-3">
+        <input type="text" name="source" value="{{ request.GET.source }}" class="form-control" placeholder="Source">
+    </div>
+    <div class="col-md-3">
+        <input type="text" name="tags" value="{{ request.GET.tags }}" class="form-control" placeholder="Tags">
+    </div>
+    <div class="col-md-2">
+        <select class="form-select" name="topic" multiple>
+            {% for code,label in filter.form.topic.field.choices %}
+            <option value="{{ code }}" {% if code in request.GET.getlist('topic') %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+        <small class="text-muted">Multi-select with Cmd/Ctrl</small>
+    </div>
+    <div class="col-md-2 d-flex gap-1">
+        <input type="number" name="difficulty_min" min="1" max="10" value="{{ request.GET.difficulty_min }}" class="form-control" placeholder="Min diff">
+        <input type="number" name="difficulty_max" min="1" max="10" value="{{ request.GET.difficulty_max }}" class="form-control" placeholder="Max diff">
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-outline-primary w-100" type="submit">Filter</button>
+    </div>
+</form>
+<div class="table-responsive shadow-sm">
+    <table class="table table-hover align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Title</th>
+                <th>Topic</th>
+                <th>Difficulty</th>
+                <th>Source</th>
+                <th>Tags</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for problem in problems %}
+            <tr>
+                <td><a href="{% url 'problem_detail' problem.pk %}">{{ problem.title }}</a></td>
+                <td>{{ problem.get_topic_display }}</td>
+                <td><span class="badge bg-secondary">{{ problem.difficulty }}</span></td>
+                <td>{{ problem.source|default:"—" }}</td>
+                <td>
+                    {% for tag in problem.tag_list %}
+                        <span class="badge bg-light text-dark border">{{ tag }}</span>
+                    {% empty %}
+                        <span class="text-muted">—</span>
+                    {% endfor %}
+                </td>
+            </tr>
+        {% empty %}
+            <tr><td colspan="5" class="text-muted text-center">No problems yet.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

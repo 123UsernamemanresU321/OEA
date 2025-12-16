@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="p-5 mb-4 bg-white rounded-3 shadow-sm">
+  <div class="container-fluid py-5">
+    <p class="text-uppercase text-primary fw-bold mb-2">Private coach for Olympiad math</p>
+    <h1 class="display-5 fw-bold">Turn every mistake into a future win.</h1>
+    <p class="col-md-8 fs-5">Olympiad Error Atlas tracks every problem attempt, converts errors into targeted drills, and schedules spaced reviews so patterns never repeat.</p>
+    <div class="d-flex gap-3">
+      <a class="btn btn-primary btn-lg" href="{% url 'register' %}">Get started</a>
+      <a class="btn btn-outline-primary btn-lg" href="{% url 'login' %}">Log in</a>
+    </div>
+  </div>
+</div>
+<div class="row g-4">
+  <div class="col-md-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Analytics that matter</h5>
+        <p class="card-text">Heatmaps by topic x mistake type, recurrence alerts, and outcome trends keep training focused.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Spaced review loop</h5>
+        <p class="card-text">Each postmortem becomes a review card with Again/Hard/Good/Easy grading and deterministic scheduling.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card h-100 shadow-sm">
+      <div class="card-body">
+        <h5 class="card-title">Secure and private</h5>
+        <p class="card-text">Authentication is built-in and all data is scoped to your account. Exports/imports keep backups simple.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

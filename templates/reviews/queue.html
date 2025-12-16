@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load markdown_extras %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h2 class="fw-bold">Daily Reviews</h2>
+        <p class="text-muted mb-0">{{ queue_size }} due</p>
+    </div>
+    <a class="btn btn-outline-primary" href="{% url 'dashboard' %}">Back to dashboard</a>
+</div>
+{% if current %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <p class="text-muted mb-1">Due {{ current.due_date }}</p>
+        <h4 class="card-title">{{ current.prompt }}</h4>
+        <div class="mt-3 p-3 bg-light rounded">
+            <details>
+                <summary class="fw-semibold">Show answer</summary>
+                <div class="mt-2 markdown-body">{{ current.answer_key|markdownify }}</div>
+            </details>
+        </div>
+        <form method="post" action="{% url 'grade_review' current.pk %}" class="mt-3">
+            {% csrf_token %}
+            <div class="btn-group" role="group">
+                <button name="rating" value="0" class="btn btn-outline-danger">Again</button>
+                <button name="rating" value="1" class="btn btn-outline-warning">Hard</button>
+                <button name="rating" value="2" class="btn btn-outline-success">Good</button>
+                <button name="rating" value="3" class="btn btn-success">Easy</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-success">No reviews due. Great job!</div>
+{% endif %}
+{% endblock %}
