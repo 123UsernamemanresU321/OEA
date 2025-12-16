@@ -1,7 +1,10 @@
 (() => {
   const typeset = (el) => {
-    if (!window.MathJax || !el) return;
-    window.MathJax.typesetPromise([el]).catch(() => {});
+    if (!el || !window.MathJax) return;
+    const ready = window.MathJax.startup && window.MathJax.startup.promise
+      ? window.MathJax.startup.promise
+      : Promise.resolve();
+    ready.then(() => window.MathJax.typesetPromise([el]).catch(() => {}));
   };
 
   const attachPreview = (textarea) => {
