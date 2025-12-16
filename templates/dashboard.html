@@ -131,6 +131,10 @@ const topicLabels = JSON.parse('{{ topic_labels|default:"[]"|escapejs }}');
 const topicData = JSON.parse('{{ topic_data|default:"[]"|escapejs }}');
 const ctx = document.getElementById('topicChart');
 if (ctx) {
+    if (typeof Chart !== 'undefined') {
+        Chart.defaults.color = '#d8e1ed';
+        Chart.defaults.borderColor = 'rgba(255,255,255,0.14)';
+    }
     new Chart(ctx, {
         type: 'doughnut',
         data: {
