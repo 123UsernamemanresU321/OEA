@@ -1,18 +1,20 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-md-6">
+    <div class="col-md-7 col-lg-6">
         <div class="card shadow-sm">
             <div class="card-body">
-                <h4 class="card-title">Import data</h4>
-                <p class="text-muted">Upload a JSON export from Olympiad Error Atlas.</p>
+                <div class="section-heading mb-2"><span class="indicator"></span> Import data</div>
+                <p class="text-white-50">Upload a JSON export from Olympiad Error Atlas.</p>
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="mb-3">
                         {{ form.file.label_tag }} {{ form.file }}
                     </div>
-                    <button class="btn btn-primary" type="submit">Import</button>
-                    <a class="btn btn-link" href="{% url 'dashboard' %}">Cancel</a>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary" type="submit">Import</button>
+                        <a class="btn btn-outline-light" href="{% url 'dashboard' %}">Cancel</a>
+                    </div>
                 </form>
             </div>
         </div>
