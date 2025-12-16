@@ -1,97 +1,143 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-3">
     <div>
-        <h2 class="fw-bold">Dashboard</h2>
-        <p class="text-muted mb-0">Your training at a glance.</p>
+        <h2 class="fw-bold text-white mb-1">Mission control</h2>
+        <p class="text-white-50 mb-0">Pulse of your Olympiad training.</p>
     </div>
-    <div>
-        <a class="btn btn-primary" href="{% url 'problem_create' %}">Add Problem</a>
-        <a class="btn btn-outline-primary" href="{% url 'review_queue' %}">Reviews ({{ nav_due_reviews }})</a>
+    <div class="d-flex flex-wrap gap-2">
+        <a class="btn btn-primary" href="{% url 'problem_create' %}">Log new problem</a>
+        <a class="btn btn-outline-light" href="{% url 'review_queue' %}">Reviews ({{ nav_due_reviews }})</a>
     </div>
 </div>
 <div class="row g-4">
-    <div class="col-md-4">
-        <div class="card shadow-sm h-100">
+    <div class="col-lg-3 col-md-6">
+        <div class="stat-tile">
+            <div class="text-white-50 text-uppercase small mb-1">Today’s reviews</div>
+            <div class="stat-value">{{ due_reviews|length }}</div>
+            <p class="text-white-50 mb-0">{% if due_reviews %}You have items queued.{% else %}You're clear for today.{% endif %}</p>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="stat-tile">
+            <div class="text-white-50 text-uppercase small mb-1">Attempts (7d)</div>
+            <div class="stat-value">{{ attempts_last7 }}</div>
+            <p class="text-white-50 mb-0">{{ attempts_last30 }} in last 30 days</p>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="stat-tile">
+            <div class="text-white-50 text-uppercase small mb-1">Top mistake type</div>
+            {% if top_mistakes %}
+                <div class="stat-value">{{ top_mistakes.0.mistake_type__name }}</div>
+                <p class="text-white-50 mb-0">{{ top_mistakes.0.total }} occurrences</p>
+            {% else %}
+                <div class="stat-value">—</div>
+                <p class="text-white-50 mb-0">Log mistakes to see insights</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="stat-tile">
+            <div class="text-white-50 text-uppercase small mb-1">Recent duration</div>
+            {% if recent_attempts %}
+            <div class="stat-value">{{ recent_attempts.0.duration_display }}</div>
+            <p class="text-white-50 mb-0">Last attempt: {{ recent_attempts.0.problem.title }}</p>
+            {% else %}
+            <div class="stat-value">—</div>
+            <p class="text-white-50 mb-0">No attempts yet</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mt-1">
+    <div class="col-lg-6">
+        <div class="card h-100">
             <div class="card-body">
-                <h6 class="text-uppercase text-muted">Today's reviews</h6>
-                <h3 class="fw-bold">{{ due_reviews.count }}</h3>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div class="section-heading"><span class="indicator"></span> Recent attempts</div>
+                    <a class="btn btn-sm btn-outline-primary" href="{% url 'attempt_list' %}">View all</a>
+                </div>
+                <ul class="timeline">
+                    {% for a in recent_attempts %}
+                    <li class="d-flex justify-content-between">
+                        <div>
+                            <div class="fw-semibold">{{ a.problem.title }}</div>
+                            <div class="text-white-50 small">{{ a.get_outcome_display }} • {{ a.started_at|date:"M d" }}</div>
+                        </div>
+                        <span class="badge bg-light text-dark">{{ a.duration_display }}</span>
+                    </li>
+                    {% empty %}
+                    <li class="text-white-50">No attempts yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <div class="section-heading"><span class="indicator"></span> Topic balance</div>
+                    <span class="text-white-50 small">Keep a healthy spread</span>
+                </div>
+                <canvas id="topicChart" height="140"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mt-1">
+    <div class="col-lg-6">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="section-heading mb-2"><span class="indicator"></span> Today’s review queue</div>
                 {% if due_reviews %}
-                    <ul class="list-group list-group-flush">
-                        {% for item in due_reviews|slice:":5" %}
-                        <li class="list-group-item">{{ item.prompt|truncatewords:10 }}</li>
-                        {% endfor %}
-                    </ul>
+                <ul class="list-group list-group-flush">
+                    {% for item in due_reviews|slice:":6" %}
+                    <li class="list-group-item bg-transparent text-white d-flex justify-content-between">
+                        <span>{{ item.prompt|truncatewords:10 }}</span>
+                        <span class="badge bg-info text-dark">{{ item.due_date }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
                 {% else %}
-                    <p class="text-muted mb-0">You're clear for today.</p>
+                <p class="text-white-50 mb-0">You're clear—no reviews due.</p>
                 {% endif %}
             </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card shadow-sm h-100">
+    <div class="col-lg-6">
+        <div class="card h-100">
             <div class="card-body">
-                <h6 class="text-uppercase text-muted">Attempts</h6>
-                <h3 class="fw-bold">{{ attempts_last7 }} <span class="text-muted fs-6">last 7 days</span></h3>
-                <p class="mb-0 text-muted">{{ attempts_last30 }} last 30 days total</p>
-                <div class="mt-3">
-                    <h6 class="text-uppercase text-muted">Recent</h6>
-                    <ul class="list-group list-group-flush">
-                        {% for a in recent_attempts %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <div>
-                                <strong>{{ a.problem.title }}</strong><br>
-                                <small class="text-muted">{{ a.get_outcome_display }} • {{ a.started_at|date:"M d" }}</small>
-                            </div>
-                            <span class="badge bg-secondary">{{ a.duration_display }}</span>
-                        </li>
-                        {% empty %}
-                        <li class="list-group-item text-muted">No attempts yet.</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card shadow-sm h-100">
-            <div class="card-body">
-                <h6 class="text-uppercase text-muted">Top mistake types</h6>
+                <div class="section-heading mb-2"><span class="indicator"></span> Top mistake types</div>
                 <ul class="list-group list-group-flush">
                     {% for m in top_mistakes %}
-                    <li class="list-group-item d-flex justify-content-between">
+                    <li class="list-group-item bg-transparent text-white d-flex justify-content-between align-items-center">
                         <span>{{ m.mistake_type__name }}</span>
                         <span class="badge bg-danger">{{ m.total }}</span>
                     </li>
                     {% empty %}
-                    <li class="list-group-item text-muted">No mistakes logged yet.</li>
+                    <li class="list-group-item bg-transparent text-white-50">No mistakes logged yet.</li>
                     {% endfor %}
                 </ul>
             </div>
         </div>
     </div>
 </div>
-<div class="card mt-4 shadow-sm">
-    <div class="card-body">
-        <div class="d-flex align-items-center justify-content-between">
-            <div>
-                <h5 class="card-title mb-0">Topic balance</h5>
-                <p class="text-muted mb-0">Keep a healthy spread across NT/Alg/Geo/Comb.</p>
-            </div>
-        </div>
-        <canvas id="topicChart" height="120"></canvas>
-    </div>
-</div>
 <script>
+const topicLabels = JSON.parse('{{ topic_labels|default:"[]"|escapejs }}');
+const topicData = JSON.parse('{{ topic_data|default:"[]"|escapejs }}');
 const ctx = document.getElementById('topicChart');
 if (ctx) {
     new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: {{ topic_labels|safe }},
+            labels: topicLabels,
             datasets: [{
                 label: 'Attempts',
-                data: {{ topic_data|safe }},
+                data: topicData,
                 backgroundColor: ['#0d6efd', '#6f42c1', '#20c997', '#fd7e14', '#adb5bd'],
             }]
         },
