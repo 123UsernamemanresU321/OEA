@@ -14,7 +14,7 @@
     <div class="col-md-2">
         <select class="form-select" name="topic" multiple>
             {% for code,label in filter.form.topic.field.choices %}
-            <option value="{{ code }}" {% if code in request.GET.getlist('topic') %}selected{% endif %}>{{ label }}</option>
+            <option value="{{ code }}" {% if code in selected_topics %}selected{% endif %}>{{ label }}</option>
             {% endfor %}
         </select>
         <small class="text-muted">Multi-select with Cmd/Ctrl</small>
