@@ -1,7 +1,7 @@
 body {
     font-family: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
     background: linear-gradient(145deg, #0b1021 0%, #0b1f33 30%, #0a2f45 60%, #083a50 100%);
-    color: #f4f6fb;
+    color: #4a4b4d;
 }
 
 .bg-surface {
@@ -291,7 +291,7 @@ main {
 }
 
 .text-white-50 {
-    color: #e7ecf7 !important;
+    color: rgb(151, 159, 172) !important;
 }
 
 .bg-dark-subtle {
