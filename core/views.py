@@ -84,7 +84,11 @@ def problem_list(request):
     return render(
         request,
         "problems/list.html",
-        {"filter": problem_filter, "problems": problem_filter.qs},
+        {
+            "filter": problem_filter,
+            "problems": problem_filter.qs,
+            "selected_topics": request.GET.getlist("topic"),
+        },
     )
 
 
