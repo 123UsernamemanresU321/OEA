@@ -1,7 +1,7 @@
 body {
     font-family: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
     background: linear-gradient(145deg, #0b1021 0%, #0b1f33 30%, #0a2f45 60%, #083a50 100%);
-    color: #e5e7eb;
+    color: #f4f6fb;
 }
 
 .bg-surface {
@@ -69,11 +69,11 @@ main {
     border: 1px solid rgba(255,255,255,0.12);
     background: rgba(13,19,35,0.92);
     box-shadow: 0 16px 40px rgba(0,0,0,0.35);
-    color: #e5e7eb;
+    color: #f4f6fb;
 }
 
 .card-title {
-    color: #e5e7eb;
+    color: #f8fafc;
     font-weight: 700;
 }
 
@@ -113,17 +113,54 @@ main {
     color: #0b1021;
 }
 
+.text-muted,
+.text-body-secondary,
+.text-secondary {
+    color: #d8e1ed !important;
+}
+
 .table {
-    color: #e5e7eb;
+    color: #f8fafc;
+    background: rgba(13,19,35,0.78);
+    border-color: rgba(255,255,255,0.12);
+}
+
+.table > :not(caption) > * > * {
+    background-color: transparent;
+    border-color: rgba(255,255,255,0.12);
 }
 
 .table thead {
     background: rgba(255,255,255,0.12);
-    color: #e5e7eb;
+    color: #f8fafc;
+}
+
+.table tbody tr {
+    background-color: rgba(255,255,255,0.02);
 }
 
 .table-hover tbody tr:hover {
-    background: rgba(255,255,255,0.04);
+    background: rgba(255,255,255,0.08);
+}
+
+.table .table-warning {
+    background: rgba(250, 204, 21, 0.18) !important;
+    color: #fef9c3 !important;
+}
+
+.table .table-danger {
+    background: rgba(239, 68, 68, 0.18) !important;
+    color: #fee2e2 !important;
+}
+
+.table .table-info {
+    background: rgba(14, 165, 233, 0.18) !important;
+    color: #cffafe !important;
+}
+
+.table .table-success {
+    background: rgba(34, 197, 94, 0.18) !important;
+    color: #bbf7d0 !important;
 }
 
 .badge.bg-light {
@@ -134,14 +171,14 @@ main {
 
 .alert {
     background: rgba(255,255,255,0.08);
-    color: #e5e7eb;
+    color: #f4f6fb;
     border: 1px solid rgba(255,255,255,0.12);
 }
 
 .form-control, .form-select, .form-check-input, textarea {
     background: rgba(255,255,255,0.08);
     border: 1px solid rgba(255,255,255,0.16);
-    color: #e5e7eb;
+    color: #f8fafc;
 }
 
 .form-control:focus, .form-select:focus {
@@ -150,7 +187,7 @@ main {
 }
 
 .form-label, label {
-    color: #e5e7eb;
+    color: #f4f6fb;
 }
 
 .form-control::placeholder {
