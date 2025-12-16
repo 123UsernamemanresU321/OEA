@@ -18,8 +18,14 @@ class ProblemForm(forms.ModelForm):
         model = Problem
         fields = ["title", "source", "topic", "difficulty", "tags", "statement"]
         widgets = {
-            "statement": forms.Textarea(attrs={"rows": 5}),
-            "difficulty": forms.NumberInput(attrs={"min": 1, "max": 10}),
+            "statement": forms.Textarea(
+                attrs={"rows": 5, "class": "form-control latex-input", "id": "id_statement"}
+            ),
+            "difficulty": forms.NumberInput(attrs={"min": 1, "max": 10, "class": "form-control"}),
+            "title": forms.TextInput(attrs={"class": "form-control"}),
+            "source": forms.TextInput(attrs={"class": "form-control"}),
+            "topic": forms.Select(attrs={"class": "form-select"}),
+            "tags": forms.TextInput(attrs={"class": "form-control"}),
         }
 
 
@@ -28,9 +34,10 @@ class AttemptForm(forms.ModelForm):
         model = Attempt
         fields = ["outcome", "final_answer", "solution_notes", "confidence"]
         widgets = {
-            "final_answer": forms.Textarea(attrs={"rows": 3}),
-            "solution_notes": forms.Textarea(attrs={"rows": 4}),
-            "confidence": forms.NumberInput(attrs={"min": 1, "max": 5}),
+            "final_answer": forms.Textarea(attrs={"rows": 3, "class": "form-control latex-input"}),
+            "solution_notes": forms.Textarea(attrs={"rows": 4, "class": "form-control latex-input"}),
+            "confidence": forms.NumberInput(attrs={"min": 1, "max": 5, "class": "form-control"}),
+            "outcome": forms.Select(attrs={"class": "form-select"}),
         }
 
 
@@ -49,10 +56,17 @@ class MistakeForm(forms.ModelForm):
             "next_review_date",
         ]
         widgets = {
-            "detailed_postmortem": forms.Textarea(attrs={"rows": 4}),
-            "fix_plan": forms.Textarea(attrs={"rows": 3}),
-            "next_review_date": forms.DateInput(attrs={"type": "date"}),
-            "severity": forms.NumberInput(attrs={"min": 1, "max": 5}),
+            "detailed_postmortem": forms.Textarea(
+                attrs={"rows": 4, "class": "form-control latex-input"}
+            ),
+            "fix_plan": forms.Textarea(attrs={"rows": 3, "class": "form-control latex-input"}),
+            "next_review_date": forms.DateInput(attrs={"type": "date", "class": "form-control"}),
+            "severity": forms.NumberInput(attrs={"min": 1, "max": 5, "class": "form-control"}),
+            "mistake_type": forms.Select(attrs={"class": "form-select"}),
+            "short_label": forms.TextInput(attrs={"class": "form-control"}),
+            "conceptual_gap": forms.CheckboxInput(attrs={"class": "form-check-input"}),
+            "execution_error": forms.CheckboxInput(attrs={"class": "form-check-input"}),
+            "strategy_error": forms.CheckboxInput(attrs={"class": "form-check-input"}),
         }
 
 
