@@ -1,22 +1,27 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-md-8">
+    <div class="col-md-10 col-lg-8">
         <div class="card shadow-sm">
             <div class="card-body">
-                <h4 class="card-title">Add mistake for {{ attempt.problem.title }}</h4>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="section-heading mb-0"><span class="indicator"></span> Add mistake</div>
+                    <div class="pill">{{ attempt.problem.title }}</div>
+                </div>
                 <form method="post">
                     {% csrf_token %}
                     {{ form.non_field_errors }}
-                    <div class="mb-3">
-                        <label class="form-label">Type</label>
-                        {{ form.mistake_type }}
-                        {{ form.mistake_type.errors }}
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Severity (1-5)</label>
-                        {{ form.severity }}
-                        {{ form.severity.errors }}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Type</label>
+                            {{ form.mistake_type }}
+                            {{ form.mistake_type.errors }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Severity (1-5)</label>
+                            {{ form.severity }}
+                            {{ form.severity.errors }}
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Short label</label>
@@ -24,7 +29,7 @@
                         {{ form.short_label.errors }}
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Detailed postmortem (Markdown)</label>
+                        <label class="form-label">Detailed postmortem (Markdown/LaTeX)</label>
                         {{ form.detailed_postmortem }}
                         {{ form.detailed_postmortem.errors }}
                     </div>
@@ -49,8 +54,10 @@
                         {{ form.next_review_date }}
                         {{ form.next_review_date.errors }}
                     </div>
-                    <button class="btn btn-primary" type="submit">Save mistake</button>
-                    <a class="btn btn-link" href="{% url 'finish_attempt' attempt.pk %}">Back</a>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary" type="submit">Save mistake</button>
+                        <a class="btn btn-outline-light" href="{% url 'finish_attempt' attempt.pk %}">Back</a>
+                    </div>
                 </form>
             </div>
         </div>
