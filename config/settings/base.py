@@ -3,7 +3,8 @@ from pathlib import Path
 
 import dj_database_url
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+# settings files live in config/settings/, so go up three levels to project root
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 ENV = os.environ
 
@@ -82,7 +83,7 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = [BASE_DIR / "static"]
+STATICFILES_DIRS = [p for p in [BASE_DIR / "static"] if p.exists()]
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
