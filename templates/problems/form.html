@@ -13,15 +13,15 @@
                 <input type="text" name="title" value="{{ form.title.value|default_if_none:'' }}" class="form-control" required>
                 {{ form.title.errors }}
               </div>
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label class="form-label">Source</label>
-                <input type="text" name="source" value="{{ form.source.value|default_if_none:'' }}" class="form-control">
-                {{ form.source.errors }}
-              </div>
-              <div class="col-md-3 mb-3">
-                <label class="form-label">Topic</label>
-                {{ form.topic }}
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Source</label>
+                  <input type="text" name="source" value="{{ form.source.value|default_if_none:'' }}" class="form-control">
+                  {{ form.source.errors }}
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label class="form-label">Topic</label>
+                  {{ form.topic }}
                 {{ form.topic.errors }}
               </div>
               <div class="col-md-3 mb-3">
@@ -35,15 +35,28 @@
               <input type="text" name="tags" value="{{ form.tags.value|default_if_none:'' }}" class="form-control">
               {{ form.tags.errors }}
             </div>
-            <div class="mb-3">
-              <label class="form-label">Statement (Markdown)</label>
-              <textarea name="statement" rows="6" class="form-control">{{ form.statement.value|default_if_none:'' }}</textarea>
-              {{ form.statement.errors }}
-            </div>
-          <button class="btn btn-primary" type="submit">Save</button>
-          <a class="btn btn-link" href="{% url 'problem_list' %}">Cancel</a>
-        </form>
-      </div>
+              <div class="mb-3">
+                <label class="form-label">Statement (Markdown)</label>
+                <div class="d-flex flex-wrap gap-2 mb-2">
+                  <span class="text-muted">Insert:</span>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" onclick="insertLatexSnippet('id_statement','\\(x^2\\)')">Inline math</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" onclick="insertLatexSnippet('id_statement','$$\\displaystyle\\\\frac{a}{b}$$')">Fraction</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" onclick="insertLatexSnippet('id_statement','$$\\\\sqrt{x}$$')">Square root</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" onclick="insertLatexSnippet('id_statement','$$\\\\sum_{i=1}^n$$')">Sum</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" onclick="insertLatexSnippet('id_statement','$$\\\\int_{a}^{b} f(x)\\\\,dx$$')">Integral</button>
+                  <button type="button" class="btn btn-sm btn-outline-secondary" onclick="insertLatexSnippet('id_statement','\\\\pi')">Greek π</button>
+                </div>
+                <textarea id="id_statement" name="statement" rows="6" class="form-control latex-input">{{ form.statement.value|default_if_none:'' }}</textarea>
+                {{ form.statement.errors }}
+                <div class="latex-preview-container mt-2">
+                  <div class="small text-muted mb-1">Preview</div>
+                  <div class="latex-preview border rounded p-3 bg-light"></div>
+                </div>
+              </div>
+              <button class="btn btn-primary" type="submit">Save</button>
+              <a class="btn btn-link" href="{% url 'problem_list' %}">Cancel</a>
+            </form>
+          </div>
     </div>
   </div>
 </div>
