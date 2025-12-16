@@ -12,11 +12,57 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
     <script>
       window.MathJax = {
-        tex: {inlineMath: [['$', '$'], ['\\\\(', '\\\\)']]},
-        options: {skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']}
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
+          processEscapes: true,
+          processEnvironments: true,
+          packages: {
+            '[+]': [
+              'ams',
+              'amscd',
+              'bbox',
+              'boldsymbol',
+              'braket',
+              'bussproofs',
+              'cancel',
+              'color',
+              'enclose',
+              'gensymb',
+              'mathchoice',
+              'mhchem',
+              'physics',
+              'unicode',
+              'upgreek'
+            ]
+          }
+        },
+        options: {
+          skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+          enableMenu: false
+        },
+        loader: {
+          load: [
+            '[tex]/ams',
+            '[tex]/amscd',
+            '[tex]/bbox',
+            '[tex]/boldsymbol',
+            '[tex]/braket',
+            '[tex]/bussproofs',
+            '[tex]/cancel',
+            '[tex]/color',
+            '[tex]/enclose',
+            '[tex]/gensymb',
+            '[tex]/mathchoice',
+            '[tex]/mhchem',
+            '[tex]/physics',
+            '[tex]/unicode',
+            '[tex]/upgreek'
+          ]
+        }
       };
     </script>
-    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"></script>
     <script defer src="{% static 'js/latex.js' %}"></script>
 </head>
 <body class="bg-surface">
