@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="row">
+<div class="row g-4">
     <div class="col-lg-7">
         <div class="card shadow-sm mb-3">
             <div class="card-body">
-                <h4 class="card-title">Finish Attempt: {{ attempt.problem.title }}</h4>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div class="section-heading mb-0"><span class="indicator"></span> Finish attempt</div>
+                    <div class="pill">{{ attempt.problem.title }}</div>
+                </div>
                 <form method="post">
                     {% csrf_token %}
                     {{ form.non_field_errors }}
@@ -21,7 +24,7 @@
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Final answer (Markdown)</label>
+                        <label class="form-label">Final answer (Markdown/LaTeX)</label>
                         {{ form.final_answer }}
                         {{ form.final_answer.errors }}
                     </div>
@@ -30,27 +33,29 @@
                         {{ form.solution_notes }}
                         {{ form.solution_notes.errors }}
                     </div>
-                    <button class="btn btn-primary" type="submit">Save</button>
-                    <a class="btn btn-link" href="{% url 'attempt_list' %}">Back</a>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-primary" type="submit">Save</button>
+                        <a class="btn btn-outline-light" href="{% url 'attempt_list' %}">Back</a>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
     <div class="col-lg-5">
-        <div class="card shadow-sm">
+        <div class="card shadow-sm h-100">
             <div class="card-body">
-                <div class="d-flex justify-content-between">
-                    <h5 class="card-title mb-0">Mistakes</h5>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="section-heading mb-0"><span class="indicator"></span> Mistakes</div>
                     <a class="btn btn-sm btn-outline-primary" href="{% url 'add_mistake' attempt.pk %}">Add mistake</a>
                 </div>
                 <ul class="list-group list-group-flush mt-3">
                     {% for m in attempt.mistakes.all %}
-                    <li class="list-group-item">
+                    <li class="list-group-item bg-transparent text-white">
                         <strong>{{ m.short_label }}</strong> — {{ m.mistake_type.name }} ({{ m.severity }})
-                        <div class="text-muted small">{{ m.detailed_postmortem|truncatewords:20 }}</div>
+                        <div class="text-white-50 small">{{ m.detailed_postmortem|truncatewords:20 }}</div>
                     </li>
                     {% empty %}
-                    <li class="list-group-item text-muted">No mistakes logged.</li>
+                    <li class="list-group-item bg-transparent text-white-50">No mistakes logged.</li>
                     {% endfor %}
                 </ul>
             </div>
