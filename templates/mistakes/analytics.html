@@ -25,7 +25,7 @@
                         <td>{{ topic }}</td>
                         {% for t in type_headers %}
                             {% with count=types|get_item:t %}
-                            <td class="{% if count >=3 %}table-danger{% elif count >=1 %}table-warning{% endif %}">
+                            <td class="{% if count and count|add:0 >= 3 %}table-danger{% elif count and count|add:0 >= 1 %}table-warning{% endif %}">
                                 {{ count|default:"0" }}
                             </td>
                             {% endwith %}
