@@ -7,6 +7,33 @@
     ready.then(() => window.MathJax.typesetPromise([el]).catch(() => {}));
   };
 
+  const escapeHtml = (str) =>
+    (str || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+
+  const convertLatexLists = (text) => {
+    let safe = escapeHtml(text || "");
+    const convert = (env, tag) => {
+      const re = new RegExp(`\\\\\\s*begin\\{${env}\\}([\\s\\S]*?)\\\\\\s*end\\{${env}\\}`, "g");
+      safe = safe.replace(re, (_, body) => {
+        const items = (body || "")
+          .split(/\\item/g)
+          .map((i) => i.trim())
+          .filter(Boolean);
+        if (!items.length) return "";
+        const lis = items.map((i) => `<li>${i}</li>`).join("");
+        return `<${tag}>${lis}</${tag}>`;
+      });
+    };
+    convert("itemize", "ul");
+    convert("enumerate", "ol");
+    return safe.replace(/\r?\n/g, "<br>");
+  };
+
   const attachPreview = (textarea) => {
     if (!textarea.classList.contains("latex-input")) return;
     // create preview container if missing
@@ -25,7 +52,9 @@
     }
 
     const render = () => {
-      previewWrapper.textContent = textarea.value || "Start typing LaTeX to preview…";
+      const content = textarea.value || "";
+      const html = convertLatexLists(content) || "Start typing LaTeX to preview…";
+      previewWrapper.innerHTML = html;
       typeset(previewWrapper);
     };
     textarea.addEventListener("input", render);
