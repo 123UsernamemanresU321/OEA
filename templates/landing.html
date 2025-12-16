@@ -1,40 +1,49 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="p-5 mb-4 bg-white rounded-3 shadow-sm">
-  <div class="container-fluid py-5">
-    <p class="text-uppercase text-primary fw-bold mb-2">Private coach for Olympiad math</p>
-    <h1 class="display-5 fw-bold">Turn every mistake into a future win.</h1>
-    <p class="col-md-8 fs-5">Olympiad Error Atlas tracks every problem attempt, converts errors into targeted drills, and schedules spaced reviews so patterns never repeat.</p>
-    <div class="d-flex gap-3">
-      <a class="btn btn-primary btn-lg" href="{% url 'register' %}">Get started</a>
-      <a class="btn btn-outline-primary btn-lg" href="{% url 'login' %}">Log in</a>
-    </div>
-  </div>
-</div>
-<div class="row g-4">
-  <div class="col-md-4">
-    <div class="card h-100 shadow-sm">
-      <div class="card-body">
-        <h5 class="card-title">Analytics that matter</h5>
-        <p class="card-text">Heatmaps by topic x mistake type, recurrence alerts, and outcome trends keep training focused.</p>
+<section class="row align-items-center g-4 mb-4">
+  <div class="col-lg-6">
+    <div class="hero-card rounded-4 p-4 p-lg-5">
+      <div class="pill mb-3">
+        <span class="indicator"></span>
+        Private coach for Olympiad math
+      </div>
+      <h1 class="display-5 fw-bold mb-3 text-white">Turn every mistake into a future win.</h1>
+      <p class="lead text-white-50 mb-4">Olympiad Error Atlas captures attempts, transforms postmortems into drills, and schedules reviews so patterns never repeat.</p>
+      <div class="d-flex flex-wrap gap-3">
+        <a class="btn btn-primary btn-lg" href="{% url 'register' %}">Start training</a>
+        <a class="btn btn-outline-light btn-lg" href="{% url 'login' %}">Log in</a>
+        <div class="d-flex align-items-center gap-2 text-white-50">
+          <span class="badge bg-warning text-dark">New</span> Live LaTeX previews
+        </div>
+      </div>
+      <div class="d-flex gap-3 mt-4 flex-wrap">
+        <div class="pill">Heatmaps & trends</div>
+        <div class="pill">Spaced repetition</div>
+        <div class="pill">JSON import/export</div>
       </div>
     </div>
   </div>
-  <div class="col-md-4">
-    <div class="card h-100 shadow-sm">
-      <div class="card-body">
-        <h5 class="card-title">Spaced review loop</h5>
-        <p class="card-text">Each postmortem becomes a review card with Again/Hard/Good/Easy grading and deterministic scheduling.</p>
+  <div class="col-lg-6">
+    <div class="row g-3">
+      <div class="col-12">
+        <div class="card p-4">
+          <h5 class="text-muted text-uppercase small mb-2">Analytics that matter</h5>
+          <p class="mb-0 text-white">Heatmaps by topic × mistake type, recurrence alerts, and time-based trends keep your training laser-focused.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card p-4 h-100">
+          <h5 class="text-muted text-uppercase small mb-2">Spaced review loop</h5>
+          <p class="mb-0 text-white">Each postmortem becomes a review card with Again/Hard/Good/Easy grading and a deterministic scheduler.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card p-4 h-100">
+          <h5 class="text-muted text-uppercase small mb-2">Secure & private</h5>
+          <p class="mb-0 text-white">Authentication built-in. All data scoped to your account. Export/import to stay portable.</p>
+        </div>
       </div>
     </div>
   </div>
-  <div class="col-md-4">
-    <div class="card h-100 shadow-sm">
-      <div class="card-body">
-        <h5 class="card-title">Secure and private</h5>
-        <p class="card-text">Authentication is built-in and all data is scoped to your account. Exports/imports keep backups simple.</p>
-      </div>
-    </div>
-  </div>
-</div>
+</section>
 {% endblock %}
