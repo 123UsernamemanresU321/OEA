@@ -1,19 +1,22 @@
 {% extends "base.html" %}
 {% load markdown_extras %}
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
     <div>
-        <h2 class="fw-bold">Daily Reviews</h2>
-        <p class="text-muted mb-0">{{ queue_size }} due</p>
+        <h2 class="fw-bold text-white mb-1">Daily reviews</h2>
+        <p class="text-white-50 mb-0">{{ queue_size }} due</p>
     </div>
-    <a class="btn btn-outline-primary" href="{% url 'dashboard' %}">Back to dashboard</a>
+    <a class="btn btn-outline-light" href="{% url 'dashboard' %}">Back to dashboard</a>
 </div>
 {% if current %}
 <div class="card shadow-sm">
     <div class="card-body">
-        <p class="text-muted mb-1">Due {{ current.due_date }}</p>
-        <h4 class="card-title">{{ current.prompt }}</h4>
-        <div class="mt-3 p-3 bg-light rounded">
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="pill">Due {{ current.due_date }}</div>
+            <div class="text-white-50 small">Grade to reschedule</div>
+        </div>
+        <h4 class="card-title mt-3">{{ current.prompt }}</h4>
+        <div class="mt-3 p-3 bg-dark-subtle rounded">
             <details>
                 <summary class="fw-semibold">Show answer</summary>
                 <div class="mt-2 markdown-body">{{ current.answer_key|markdownify }}</div>
