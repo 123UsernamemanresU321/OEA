@@ -1,32 +1,48 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h2 class="fw-bold">Problems</h2>
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-3">
+    <div>
+        <h2 class="fw-bold text-white mb-1">Problem vault</h2>
+        <p class="text-white-50 mb-0">Filter by topic, difficulty, or tags.</p>
+    </div>
     <a class="btn btn-primary" href="{% url 'problem_create' %}">New Problem</a>
 </div>
-<form method="get" class="row g-2 mb-3">
-    <div class="col-md-3">
-        <input type="text" name="source" value="{{ request.GET.source }}" class="form-control" placeholder="Source">
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="get" class="row g-3 align-items-end">
+            <div class="col-md-3">
+                <label class="form-label text-white-50">Source</label>
+                <input type="text" name="source" value="{{ request.GET.source }}" class="form-control" placeholder="Book, contest, site">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label text-white-50">Tags</label>
+                <input type="text" name="tags" value="{{ request.GET.tags }}" class="form-control" placeholder="geometry, inversion">
+            </div>
+            <div class="col-md-3">
+                <label class="form-label text-white-50">Topic</label>
+                <select class="form-select" name="topic" multiple>
+                    {% for code,label in filter.form.topic.field.choices %}
+                    <option value="{{ code }}" {% if code in selected_topics %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+                <small class="text-white-50">Multi-select with Cmd/Ctrl</small>
+            </div>
+            <div class="col-md-2 d-flex gap-2">
+                <div>
+                    <label class="form-label text-white-50">Min diff</label>
+                    <input type="number" name="difficulty_min" min="1" max="10" value="{{ request.GET.difficulty_min }}" class="form-control" placeholder="1">
+                </div>
+                <div>
+                    <label class="form-label text-white-50">Max diff</label>
+                    <input type="number" name="difficulty_max" min="1" max="10" value="{{ request.GET.difficulty_max }}" class="form-control" placeholder="10">
+                </div>
+            </div>
+            <div class="col-md-1 d-flex">
+                <button class="btn btn-outline-light w-100" type="submit">Filter</button>
+            </div>
+        </form>
     </div>
-    <div class="col-md-3">
-        <input type="text" name="tags" value="{{ request.GET.tags }}" class="form-control" placeholder="Tags">
-    </div>
-    <div class="col-md-2">
-        <select class="form-select" name="topic" multiple>
-            {% for code,label in filter.form.topic.field.choices %}
-            <option value="{{ code }}" {% if code in selected_topics %}selected{% endif %}>{{ label }}</option>
-            {% endfor %}
-        </select>
-        <small class="text-muted">Multi-select with Cmd/Ctrl</small>
-    </div>
-    <div class="col-md-2 d-flex gap-1">
-        <input type="number" name="difficulty_min" min="1" max="10" value="{{ request.GET.difficulty_min }}" class="form-control" placeholder="Min diff">
-        <input type="number" name="difficulty_max" min="1" max="10" value="{{ request.GET.difficulty_max }}" class="form-control" placeholder="Max diff">
-    </div>
-    <div class="col-md-2">
-        <button class="btn btn-outline-primary w-100" type="submit">Filter</button>
-    </div>
-</form>
+</div>
 <div class="table-responsive shadow-sm">
     <table class="table table-hover align-middle">
         <thead class="table-light">
@@ -41,7 +57,7 @@
         <tbody>
         {% for problem in problems %}
             <tr>
-                <td><a href="{% url 'problem_detail' problem.pk %}">{{ problem.title }}</a></td>
+                <td><a class="text-white text-decoration-none fw-semibold" href="{% url 'problem_detail' problem.pk %}">{{ problem.title }}</a></td>
                 <td>{{ problem.get_topic_display }}</td>
                 <td><span class="badge bg-secondary">{{ problem.difficulty }}</span></td>
                 <td>{{ problem.source|default:"—" }}</td>
@@ -49,12 +65,12 @@
                     {% for tag in problem.tag_list %}
                         <span class="badge bg-light text-dark border">{{ tag }}</span>
                     {% empty %}
-                        <span class="text-muted">—</span>
+                        <span class="text-white-50">—</span>
                     {% endfor %}
                 </td>
             </tr>
         {% empty %}
-            <tr><td colspan="5" class="text-muted text-center">No problems yet.</td></tr>
+            <tr><td colspan="5" class="text-white-50 text-center">No problems yet.</td></tr>
         {% endfor %}
         </tbody>
     </table>
